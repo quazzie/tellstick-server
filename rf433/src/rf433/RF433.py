@@ -414,7 +414,7 @@ class RF433(Plugin):
 		logging.warning("Could not get hw version for RF433")
 
 	def __hwVersion(self, version):
-		logging.debug("Got HW version %s", version)
+		logging.info("Got HW version %s", version)
 		self.hwVersion = version
 		if version not in RF433.fwVersions:
 			return

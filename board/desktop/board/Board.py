@@ -52,7 +52,8 @@ class Board(object):
 
 	@staticmethod
 	def rf433Port():
-		return 'hwgrep://10c4:ea60'
+		# return 'hwgrep://10c4:ea60'
+		return 'hwgrep://1781:0c32'
 
 	@staticmethod
 	def secret():

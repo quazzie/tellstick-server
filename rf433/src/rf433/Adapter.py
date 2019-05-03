@@ -26,6 +26,7 @@ class Adapter(threading.Thread):
 		(self.readPipe, self.writePipe) = os.pipe()
 		fl = fcntl.fcntl(self.readPipe, fcntl.F_GETFL)
 		fcntl.fcntl(self.readPipe, fcntl.F_SETFL, fl | os.O_NONBLOCK)
+		logging.info("433 Adapter starting %s" % (dev))
 		self.start()
 
 	def queue(self, msg):
@@ -46,7 +47,9 @@ class Adapter(threading.Thread):
 				time.sleep(1)
 				try:
 					self.dev = serial.serial_for_url(self.devUrl, 115200, timeout=0)
+					logging.info("Dev %s" % (self.dev))
 				except Exception as e:
+					logging.info("Dev error %s" % (e))
 					self.dev = None
 				continue
 
@@ -74,6 +77,7 @@ class Adapter(threading.Thread):
 							self.__waitForResponse.response(params)
 							self.__waitForResponse = None
 							continue
+					logging.info("Received %s" % (cmd))
 					app.queue(self.handler.decodeData, cmd, params)
 					continue
 				buffer = buffer + x
@@ -121,4 +125,5 @@ class Adapter(threading.Thread):
 			self.waitingForData = False
 
 	def __send(self, msg):
+		logging.info("Sending %s" % (msg))
 		self.dev.write(bytearray(msg))

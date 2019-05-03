@@ -91,6 +91,10 @@ class Protocol(object):
 			decoded = ProtocolSartano.decodeData(data)
 			if decoded is not None:
 				retval.append(decoded)
+		if data['protocol'] == 'fa20rf':
+			decoded = ProtocolFA20RF.decodeData(data)
+			if decoded is not None:
+					retval.append(decoded)
 		return retval
 
 	@staticmethod
@@ -118,6 +122,8 @@ class Protocol(object):
 			return Device.TURNON | Device.TURNOFF
 		if (protocol == 'hasta'):
 			return Device.UP | Device.DOWN | Device.STOP
+		if (protocol == 'fa20rf'):
+			return Device.BELL
 		return 0
 
 	@staticmethod
@@ -134,6 +140,8 @@ class Protocol(object):
 			return ['house', 'unit']
 		if (protocol == 'hasta'):
 			return ['house', 'unit']
+		if (protocol == 'fa20rf'):
+			return ['code']
 		return []
 
 	@staticmethod
@@ -174,6 +182,8 @@ class Protocol(object):
 			return ProtocolX10()
 		if (protocol == 'yidong'):
 			return ProtocolYidong()
+		if (protocol == 'fa20rf'):
+			return ProtocolFA20RF()
 		return None
 
 # pylint: disable=C0413
@@ -195,3 +205,4 @@ from .ProtocolUpm import ProtocolUpm
 from .ProtocolWaveman import ProtocolWaveman
 from .ProtocolX10 import ProtocolX10
 from .ProtocolYidong import ProtocolYidong
+from .ProtocolFA20RF import ProtocolFA20RF
