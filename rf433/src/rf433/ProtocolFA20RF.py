@@ -23,25 +23,22 @@ class ProtocolFA20RF(Protocol):
 		return retval
 
 	def stringForMethod(self, method, data=None):
-		intCode = self.intParameter('code', 1, 10000000) # 9954226 
-		logging.info("StringForMethod %i:%s" % (intCode, method))
+		intCode = self.intParameter('code', 1, 10000000)
 
 		if method != Device.BELL:
 			return ''
 
-		l = chr(130)   # 0
+		l = chr(132)  # 0
 		h = chr(255)  # 1
-		s = chr(62)   # space between bits
-		pb = chr(250) # preable big
-		ps = chr(82)  # preable small
+		s = chr(69)   # space between bits
+		pb = chr(110) # preamble big
+		ps = chr(84)  # preamble small
 
 		bits = [l + s,h + s]
-
 		strCode = pb + ps + s
 
 		for i in range(23, -1, -1):
-			strCode = strCode + bits[(intCode>>i)&0x01]
+			b = (intCode>>i)&0x01
+			strCode = strCode + bits[b]
 
-		logging.info("Sending %s" % (strCode))
-
-		return {'S': strCode}
+		return {'R': 20, 'P': 110, 'S': strCode}
